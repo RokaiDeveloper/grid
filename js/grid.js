@@ -26,31 +26,84 @@ function initStage(width, height) {
   });
 
   stage.add(layer);
-
-  const hexagon = new Konva.RegularPolygon({
-    x: stage.width() / 2,
-    y: stage.height() / 2,
-    sides: 6,
-    radius: 20,
-    fill: 'red',
-    stroke: 'black',
-    strokeWidth: 1
-  });
-
-  layer.add(hexagon);
-  layer.draw();
 }
 
+function createHex(x, y) {
+  const hex = new Konva.RegularPolygon({
+    x: x,
+    y: y,
+    sides: 6,
+    radius: radius,
+    fill: '#1a1a2e',
+    stroke: '#4a90d9',
+    strokeWidth: 1,
+  });
+
+  layer.add(hex);
+}
+
+function breadthFirstSearch(startX, startY, canvasWidth, canvasHeight, maxDepth = Number.POSITIVE_INFINITY) {
+  const createdHexagons = new Set();
+  const queue = [{ x: startX, y: startY, depth: 0 }];
+
+  function key(x, y) {
+    return `${Math.round(x)},${Math.round(y)}`;
+  }
+
+  createdHexagons.add(key(startX, startY));
+
+  while (queue.length > 0) { 
+    const { x, y, depth } = queue.shift();
+    createHex(x, y);
+
+    if (depth >= maxDepth) {
+      continue;
+    }
+
+    for (const neighbor of allNeighbors(x, y)) {
+      const neighborKey = key(neighbor.x, neighbor.y);
+
+      const dentroDoCanvas = neighbor.x >= 0 && neighbor.x <= canvasWidth && neighbor.y >= 0 && neighbor.y <= canvasHeight;
+
+      if (!createdHexagons.has(neighborKey) && dentroDoCanvas) {
+        createdHexagons.add(neighborKey);
+        queue.push({ ...neighbor, depth: depth + 1 });
+      }
+    }
+
+  }
+
+  if (layer) {
+    layer.batchDraw();
+  }
+
+}
 document.addEventListener('DOMContentLoaded', () => {
   const initBtn = document.getElementById('initButton');
+  const fillBtn = document.getElementById('fillButton');
   const wInput = document.getElementById('widthInput');
   const hInput = document.getElementById('heightInput');
 
-  if (initBtn && wInput && hInput) {
+  if (initBtn && fillBtn && wInput && hInput) {
     initBtn.addEventListener('click', () => {
       const w = parseInt(wInput.value, 10) || 800;
       const h = parseInt(hInput.value, 10) || 600;
       initStage(w, h);
+    });
+
+    fillBtn.addEventListener('click', () => {
+      const w = parseInt(wInput.value, 10) || 800;
+      const h = parseInt(hInput.value, 10) || 600;
+
+      if (!stage) {
+        initStage(w, h);
+      }
+
+      if (layer) {
+        layer.destroyChildren();
+      }
+
+      breadthFirstSearch(w / 2, h / 2, w, h);
     });
   }
 });

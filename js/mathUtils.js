@@ -1,3 +1,5 @@
+const radius = 25;
+
 //hexagonos são compostos de 6 lados, para apontar para o meio de cada lado precisamos apontar de 30 em 30 graus
 //por isso determinamos os valores de seno e cosseno para 30 graus, e depois multiplicamos por 2 vezes o apotema para obter a posição do vizinho
 const SQRT3 = Math.sqrt(3);
