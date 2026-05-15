@@ -35,10 +35,10 @@ function createHex(x, y) {
     sides: 6,
     radius: radius,
     fill: '#1a1a2e',
+    rotation: 30,
     stroke: '#4a90d9',
     strokeWidth: 1,
   });
-
   layer.add(hex);
 }
 
@@ -76,6 +76,9 @@ function breadthFirstSearch(startX, startY, canvasWidth, canvasHeight, maxDepth 
   if (layer) {
     layer.batchDraw();
   }
+  console.log(allNeighbors(400, 300));
+  console.log('apotema:', apotema);
+  console.log('distancia:', distancia);
 
 }
 document.addEventListener('DOMContentLoaded', () => {
