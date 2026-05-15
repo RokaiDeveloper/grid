@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+</head>
+
+<body>
+  <div style="display:flex;gap:16px;align-items:flex-start;padding:12px;">
+    <div id="controls" style="display:flex;gap:8px;align-items:center;">
+      <label>Width: <input id="widthInput" type="number" value="800" style="width:80px"></label>
+      <label>Height: <input id="heightInput" type="number" value="600" style="width:80px"></label>
+      <button id="initButton">Inicializar Grid</button>
+    </div>
+  </div>
+
+  <div id="container" style="border:1px solid #ccc; width:800px; height:600px;"></div>
+  <script src="../js/grid.js"></script>
+</body>
+
+</html>
