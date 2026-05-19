@@ -1,6 +1,7 @@
 # Grid Axial e Coordenadas Axiais
 
-![Exemplo de Grid Axial](https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Hex-grid-coords-axial.svg/512px-Hex-grid-coords-axial.svg.png)
+![Exemplo de Grid Axial](<img width="850" height="373" alt="image" src="https://github.com/user-attachments/assets/e3dc3edd-12f9-47fc-8ff9-5b7eb0cff170" />
+)
 *Exemplo de um grid axial com coordenadas (fonte: Wikipedia)*
 
 ## O que é esse projeto?
