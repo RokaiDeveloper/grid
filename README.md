@@ -1,7 +1,6 @@
 # Grid Axial e Coordenadas Axiais
+<img width="850" height="373" alt="image" src="https://github.com/user-attachments/assets/29da5981-3b49-45d8-8e11-48d7493f2757" />
 
-![Exemplo de Grid Axial](<img width="850" height="373" alt="image" src="https://github.com/user-attachments/assets/e3dc3edd-12f9-47fc-8ff9-5b7eb0cff170" />
-)
 *Exemplo de um grid axial com coordenadas (fonte: Wikipedia)*
 
 ## O que é esse projeto?
