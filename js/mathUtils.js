@@ -1,32 +1,83 @@
+/*
+ * mathUtils.js
+ * Simpler and calmer documentation for hex grid math utilities.
+ */
+
+// Radius of a hex in pixels
 const radius = 25;
-
 const SQRT3 = Math.sqrt(3);
-const cos30 = SQRT3 / 2;
-const sin30 = 1 / 2;
-const apotema = radius * cos30;
-const distancia = apotema * 2;
+const HEX_SIZE = radius;
 
-const directions = [
-  { x:  distancia * cos30, y:  distancia * sin30 },  // 30°
-  { x:  0,                 y:  distancia         },  // 90°
-  { x: -distancia * cos30, y:  distancia * sin30 },  // 150°
-  { x: -distancia * cos30, y: -distancia * sin30 },  // 210°
-  { x:  0,                 y: -distancia         },  // 270°
-  { x:  distancia * cos30, y: -distancia * sin30 },  // 330°
+// Axial neighbor offsets (E, NE, NW, W, SW, SE)
+const AX_DIRECTIONS = [
+  { dq: +1, dr:  0 },
+  { dq: +1, dr: -1 },
+  { dq:  0, dr: -1 },
+  { dq: -1, dr:  0 },
+  { dq: -1, dr: +1 },
+  { dq:  0, dr: +1 },
 ];
 
-function neighborPosition(cx, cy, directionIndex) {
-  const dir = directions[directionIndex];
+/**
+ * Convert axial coordinates (q, r) to pixel coordinates { x, y }.
+ * Used to position hex shapes on the canvas.
+ */
+function axialToPixel(q, r) {
   return {
-    x: cx + dir.x,
-    y: cy + dir.y,
+    x: HEX_SIZE * (3/2 * q),
+    y: HEX_SIZE * (SQRT3/2 * q + SQRT3 * r),
   };
 }
 
-function allNeighbors(cx, cy) {
-  const neighbors = [];
-  for (let i = 0; i < directions.length; i++) {
-    neighbors.push(neighborPosition(cx, cy, i));
-  }
-  return neighbors;
+/**
+ * Round fractional axial coordinates to the nearest valid axial coords.
+ * This maintains the cube-coordinate constraint implicitly.
+ */
+function axialRound(q, r) {
+  const s = -q - r;
+  let rq = Math.round(q);
+  let rr = Math.round(r);
+  let rs = Math.round(s);
+
+  const dq = Math.abs(rq - q);
+  const dr = Math.abs(rr - r);
+  const ds = Math.abs(rs - s);
+
+  if (dq > dr && dq > ds) rq = -rr - rs;
+  else if (dr > ds) rr = -rq - rs;
+
+  return { q: rq, r: rr };
 }
+
+/**
+ * Convert pixel coordinates (px, py) to axial coordinates (rounded).
+ */
+function pixelToAxial(px, py) {
+  const q = (2/3 * px) / HEX_SIZE;
+  const r = (-1/3 * px + SQRT3/3 * py) / HEX_SIZE;
+  return axialRound(q, r);
+}
+
+/**
+ * Return a simple string key for a hex at (q, r).
+ */
+function hexKey(q, r) {
+  return `${q},${r}`;
+}
+
+/**
+ * Return the 6 neighboring axial coordinates around (q, r).
+ */
+function axialNeighbors(q, r) {
+  return AX_DIRECTIONS.map(d => ({ q: q + d.dq, r: r + d.dr }));
+}
+
+module.exports = {
+  radius,
+  HEX_SIZE,
+  axialToPixel,
+  axialRound,
+  pixelToAxial,
+  hexKey,
+  axialNeighbors,
+};
